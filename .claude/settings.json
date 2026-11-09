@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/use-kshirane-personal.py\"",
+            "timeout": 15,
+            "statusMessage": "gh の認証を kshirane-personal に合わせています"
+          }
+        ]
+      }
+    ]
+  }
+}

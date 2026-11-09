@@ -39,8 +39,13 @@ AIE2026（AIエンジニアリング実践講座）の演習・宿題を、kshir
 
 ## git（グローバル設定の「バージョン管理の代行」より、こちらを優先する）
 
-- GitHub の認証は `kshirane-personal` を使う。作業前に `gh api user --jq .login` で確認し、
-  違っていたら `gh auth switch --hostname github.com --user kshirane-personal` で切り替える
+- GitHub の認証は必ず `kshirane-personal` を使う。gh の「有効なアカウント」は別のアカウントのことがあるが、
+  切り替えない（利用者が別のリポジトリで使っているため）。このリポジトリでは次の2つで自動的に kshirane-personal になる
+  - git（push / pull / fetch）：このリポジトリの `.git/config` の credential helper（WORKFLOW.md「GitHub の認証」）
+  - gh：`.claude/hooks/use-kshirane-personal.py`（PreToolUse フック）が、gh を含むコマンドに kshirane-personal のトークンを渡す。
+    `gh auth` で始まる認証の管理コマンドは対象外
+- 確認したいときは `gh api user --jq .login`（フックが効いていれば `kshirane-personal` と返る）。
+  403 などで失敗したら、フックが外れていないか、credential helper の設定が残っているかを確認する
 - 元リポジトリ（upstream = matsuolab）には、push・PR・Issue・コメントを一切しない
 - PR は必ず `gh pr create --repo kshirane-personal/lecture-ai-engineering-2026 --base main` で作る
   （フォークでは、指定しないと提出先が元リポジトリになる）

@@ -23,6 +23,21 @@ kshirane-personal/lecture-ai-engineering-2026   （origin：自分のフォー�
 - 元リポジトリへの push は、手元の設定で無効にしてある（`git remote -v` で upstream の push が `DISABLE`）
 - フォークは公開状態。answer.md やコードに、業務上の情報・個人情報・API キーを書かない
 
+### GitHub の認証
+
+この Mac の gh には複数のアカウント（`kshirane-personal` と別のアカウント）がログインしている。このリポジトリは、
+gh の「有効なアカウント」がどちらでも、必ず `kshirane-personal` で GitHub とやりとりするように設定してある。
+
+- **git（push / pull / fetch）**：このリポジトリの `.git/config` に、kshirane-personal のトークンを使う credential helper を設定。
+  `.git/config` はリポジトリに含まれないので、**clone し直したら次を再実行する**
+  ```bash
+  git config --local credential.https://github.com.helper ""
+  git config --local --add credential.https://github.com.helper '!f() { test "$1" = get || exit 0; echo username=kshirane-personal; echo "password=$(/opt/homebrew/bin/gh auth token --hostname github.com --user kshirane-personal)"; }; f'
+  ```
+- **gh（PR の作成など）**：Claude Code が実行する分は `.claude/hooks/use-kshirane-personal.py` で自動的に kshirane-personal になる。
+  自分でターミナルから gh を使うときは、`gh auth switch --user kshirane-personal` で切り替えるか、
+  コマンドの頭に `GH_TOKEN="$(gh auth token --user kshirane-personal)"` をつける
+
 ## 役割分担
 
 | 担当 | やること |
