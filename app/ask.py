@@ -13,7 +13,7 @@
 import argparse
 
 from google import genai
-from google.genai import errors
+from google.genai import errors, types
 
 from app.config import MODEL, api_error_message, get_api_key
 
@@ -21,12 +21,19 @@ from app.config import MODEL, api_error_message, get_api_key
 DEFAULT_QUESTION = "AIE2026の講座の宿題にある「3レベル」とは何ですか？"
 
 
-def ask(question: str) -> str:
+def ask(question: str, temperature: float | None = None) -> str:
     client = genai.Client(api_key=get_api_key())
-    response = client.models.generate_content(model=MODEL, contents=question)
+    # 第1回 宿題（基礎）: temperature（0.0〜2.0）を渡す。None ならモデルの既定値を使う
+    # Gemini 3.6 Flash 以降のモデルでは、temperature は無視される
+    config = types.GenerateContentConfig(temperature=temperature)
+    response = client.models.generate_content(model=MODEL, contents=question, config=config)
 
-    # TODO(第1回 演習): response.usage_metadata から
-    #   入力トークン数と出力トークン数を表示してみよう（Copilotに頼んでよい）
+    # 第1回 演習: response.usage_metadata から入力・出力のトークン数を表示する
+    # 思考（thinking）するモデルでは、回答とは別に思考のトークン数も返る
+    usage = response.usage_metadata
+    if usage:
+        print(f"[tokens] 入力: {usage.prompt_token_count} / 出力: {usage.candidates_token_count}"
+              f" / 思考: {usage.thoughts_token_count or 0}\n")
 
     return response.text
 
@@ -34,12 +41,15 @@ def ask(question: str) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser(description="素のLLMに質問する")
     parser.add_argument("question", nargs="?", default=DEFAULT_QUESTION)
+    parser.add_argument("--temperature", type=float, default=None,
+                        help="出力のばらつき（0.0〜2.0）。省略するとモデルの既定値")
     args = parser.parse_args()
 
     print(f"[model] {MODEL}")
+    print(f"[temperature] {'既定値' if args.temperature is None else args.temperature}")
     print(f"[質問] {args.question}\n")
     try:
-        print(ask(args.question))
+        print(ask(args.question, args.temperature))
     except errors.APIError as e:
         print(api_error_message(e.code, e.message))
         raise SystemExit(1)
