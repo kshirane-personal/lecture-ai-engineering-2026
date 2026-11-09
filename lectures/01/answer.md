@@ -15,6 +15,7 @@
 ## 宿題
 
 - 取り組んだレベル：基礎
+- 使ったモデル：`gemini-3.5-flash-lite`（モデルは変えず、temperature だけを変えた）
 - やったこと：
   - `app/ask.py` に `--temperature` オプションを追加し、`generate_content` の `config`（`GenerateContentConfig`）で temperature を渡せるようにした
   - 講座に固有の質問（宿題の3レベル）を、temperature 0.0 / 1.0（このモデルの既定値）/ 2.0 で3回ずつ、計9回実行して出力を比べた
