@@ -80,16 +80,17 @@ answer.md に「手元の Mac で実施」「Copilot の代わりに Cursor を�
 | 第1回 演習6 | Copilot でトークン数の表示を足す | Cursor か Claude Code で行う（README で AI ツールの利用は許可されている） |
 | 第2回 | Google Colab（T4 GPU） | **そのまま Colab で実行する**。`result.json` をダウンロードして `lectures/02/` に置き、answer.md の整理は手元で行う |
 | 第3回 発展(b) | Pi を **Codespaces の中で** 動かす | Pi は確認なしでファイルの操作やコマンドの実行をするため、手元の Mac では動かさない。この課題を選ぶ場合だけ Codespaces を使う |
-| 第5回 発展 | Copilot Chat（VS Code）を MCP クライアントにする | Cursor の MCP 設定（`.cursor/mcp.json`）で同じ用語集サーバーを使い、違いを answer.md に書く |
+| 第6回 発展 | 自分が使っているソフトウェアの MCP の設定方法を調べ、`app/mcp_servers.json` と比べる | Cursor（`.cursor/mcp.json`）か Claude Code を選べば、講座の想定どおりに進められる |
 
 Codespaces を使うときは、フォークに push 済みの内容から起動する。手元と Codespaces の両方で編集した場合は、
 片方で push → もう片方で pull してから続ける。使い終わったら Codespaces を停止する。
 
-## 現状の注意点（2026-11-09 時点）
+## 現状の注意点（2026-11-23 時点）
 
-- `lec03-start` / `lec05-start` タグは、元リポジトリにまだない。前の回を飛ばして始める手順は使えない
+- 2026-11-23 の講座側の更新で、第5回（講義資料を検索して回答する＝RAG）が追加され、以前の第5回（MCP）は第6回になった
+- 元リポジトリのタグは `lec03-start` / `lec04-start` / `lec06-start` がある。`lec05-start` はまだない
 - README にある `.github/workflows/test.yml`（PR での自動テスト）は存在しない
-- `lectures/02/reference/` には README だけがあり、講師の実行結果のファイルはない
+- `lectures/02/reference/` に、講師の実行結果のファイル（`result.json`・`eval_before.json`・`eval_after.json`）が追加された
 - 提出期限は、リポジトリには書かれていない。講座からの案内で確認する
 - 提出は「PR を作る」＋「講座のフォームにリポジトリの URL を記入する」（講座の案内で確認済み、2026-11-09）。
   フォームには「運営が参照できるよう公開リポジトリにする」とあり、このフォークは公開（PUBLIC）になっている
